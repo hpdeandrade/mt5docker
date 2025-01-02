@@ -1,3 +1,6 @@
+# remove display lock if any
+rm -rf /tmp/.X100-lock
+
 # open mt5 terminal
 export DISPLAY=:100
 Xvfb :100 -ac -screen 0 1280x960x24 &
