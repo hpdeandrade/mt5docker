@@ -1,0 +1,14 @@
+services:
+  mt5docker:
+    image: hpdeandrade/mt5docker:stable
+    container_name: mt5docker
+    environment:
+      - VNC_PASSWORD=
+      - MT5_HOST=
+    ports:
+      - 5901:5901
+      - 6081:6081
+      - 8001:8001
+    restart: "no"
+    stdin_open: true
+    tty: true
