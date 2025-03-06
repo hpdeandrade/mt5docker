@@ -9,6 +9,6 @@
       "enabled": true,
       "fileMatch": ["compose.yaml"]
   },
-  "schedule": ["every day"],
+  "schedule": "daily",
   "automerge": false
 }
