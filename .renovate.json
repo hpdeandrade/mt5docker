@@ -1,14 +1,14 @@
 {
-  "extends": ["config:base"],
-  "dockerfile": {
-    "enabled": true
-  },
-  "packageRules": [
-    {
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["tobix/pywine"],
-      "versioning": "python",
-      "automerge": false
-    }
-  ]
+    "extends": ["config:base"],
+    "dockerfile": {
+        "enabled": true
+    },
+    "packageRules": [
+        {
+        "matchDatasources": ["docker"],
+        "matchPackageNames": ["tobix/pywine"],
+        "versioning": "python",
+        "automerge": false
+        }
+    ]
 }
