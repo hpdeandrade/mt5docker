@@ -1,14 +1,13 @@
 {
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": ["config:base"],
-    "dockerfile": {
-        "enabled": true
+    "docker": {
+        "enabled": true,
+        "fileMatch": ["Dockerfile"]
     },
-    "packageRules": [
-        {
-        "matchDatasources": ["docker"],
-        "matchPackageNames": ["tobix/pywine"],
-        "versioning": "python",
-        "automerge": false
-        }
-    ]
+    "docker-compose": {
+        "enabled": true,
+        "fileMatch": ["compose.yaml"]
+    },
+    "automerge": false
 }
