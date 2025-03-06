@@ -1,6 +1,13 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
-  ]
+  "extends": ["config:base"],
+  "docker": {
+      "enabled": true,
+      "fileMatch": ["Dockerfile"]
+  },
+  "docker-compose": {
+      "enabled": true,
+      "fileMatch": ["compose.yaml"]
+  },
+  "automerge": false
 }
