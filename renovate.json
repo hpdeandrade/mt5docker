@@ -15,13 +15,16 @@
             "compose.yaml"
         ]
     },
-    "docker": {
-        "enabled": true,
-        "fileMatch": [
-            "Dockerfile"
-        ]
-    },
     "packageRules": [
+        {
+            "matchCategories": [
+                "docker"
+            ],
+            "enabled": true,
+            "fileMatch": [
+                "Dockerfile"
+            ]
+        },
         {
             "matchCategories": [
                 "docker"
