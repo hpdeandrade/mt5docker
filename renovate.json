@@ -3,22 +3,50 @@
     "extends": [
         "config:recommended"
     ],
+    "pip_requirements": {
+        "enabled": true,
+        "fileMatch": [
+            "requirements.txt"
+        ]
+    },
     "docker-compose": {
         "enabled": true,
         "fileMatch": [
             "compose.yaml"
         ]
     },
-    "automerge": false,
+    "docker": {
+        "enabled": true,
+        "fileMatch": [
+            "Dockerfile"
+        ]
+    },
     "packageRules": [
         {
             "matchCategories": [
                 "docker"
             ],
-            "enabled": true,
-            "fileMatch": [
-                "Dockerfile"
-            ]
+            "enabled": true
+        },
+        {
+            "matchManagers": [
+                "pip_requirements"
+            ],
+            "matchUpdateTypes": [
+                "major"
+            ],
+            "groupName": "Python major dependency updates"
+        },
+        {
+            "matchManagers": [
+                "pip_requirements"
+            ],
+            "matchUpdateTypes": [
+                "minor",
+                "patch"
+            ],
+            "groupName": "Python minor and patch dependency updates"
         }
-    ]
+    ],
+    "automerge": false
 }
