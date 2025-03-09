@@ -1,0 +1,21 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "automerge": false,
+  "dockerfile": {
+    "fileMatch": [
+      "Dockerfile"
+    ]
+  },
+  "docker-compose": {
+    "fileMatch": [
+      "compose.yaml"
+    ]
+  },
+  "commitMessagePrefix": "chore(deps): ",
+  "schedule": [
+    "on the first day of the month"
+  ]
+}
