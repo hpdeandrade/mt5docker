@@ -3,7 +3,7 @@ rm -rf /tmp/.X100-lock
 
 # open mt5 terminal
 export DISPLAY=:100
-Xvfb :100 -ac -screen 0 1280x960x24 &
+Xvfb :100 -ac -screen 0 1024x768x24 &
 cd "/opt/wineprefix/drive_c/Program Files/MetaTrader 5"
 wine terminal64.exe /config:custom.ini &
 
