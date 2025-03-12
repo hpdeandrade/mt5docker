@@ -1,5 +1,5 @@
 MIT License
-Copyright 2024 HENRIQUE PEREZ DE ANDRADE
+Copyright 2025 HENRIQUE PEREZ DE ANDRADE
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
