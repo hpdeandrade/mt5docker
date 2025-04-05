@@ -13,20 +13,8 @@ x11vnc -display :100 -forever -rfbport 5901 -rfbauth /mt5docker/passwd &
 chmod 600 /mt5docker/passwd
 /mt5docker/noVNC-master/utils/novnc_proxy --vnc localhost:5901 --listen 6081 &
 
-# install vc_redist_x86 if not installed yet
-if [ ! -f "/mt5docker/vc_redist.x86.exe" ]; then
-  curl -L -o vc_redist.x86.exe https://aka.ms/vs/17/release/vc_redist.x86.exe
-  wine vc_redist.x86.exe
-fi
-
-# install vc_redist_x64 if not installed yet
-if [ ! -f "/mt5docker/vc_redist.x64.exe" ]; then
-  curl -L -o vc_redist.x64.exe https://aka.ms/vs/17/release/vc_redist.x64.exe
-  wine vc_redist.x64.exe
-fi
-
 # install mt5 if not installed yet
-if [ ! -f "/mt5docker/mt5setup.exe" ]; then
+if [ ! -f "/opt/wineprefix/drive_c/Program Files/MetaTrader 5/terminal64.exe" ]; then
   curl -L -o mt5setup.exe https://download.mql5.com/cdn/web/metaquotes.ltd/mt5/mt5setup.exe
   wine mt5setup.exe
   wine taskkill /IM "terminal64.exe" /F
@@ -36,10 +24,22 @@ fi
 mv "/mt5docker/mt5cfg.ini" "/opt/wineprefix/drive_c/Program Files/MetaTrader 5"
 cd "/opt/wineprefix/drive_c/Program Files/MetaTrader 5"
 wine terminal64.exe /config:mt5cfg.ini &
+echo "Waiting 15s for MT5 Windows to instantiate..."
+sleep 15
 
 # open mt5 linux
 cd /mt5docker
-wine python -m pymt5linux --host $MT5_HOST --port 8001 C:/Python/python.exe
+wine python -m pymt5linux --host $MT5_HOST --port 8001 C:/Python/python.exe &
+echo "Waiting 15s for MT5 Linux to instantiate..."
+sleep 15
+
+# test connection when container starts up
+if [ ! -f "/tmp/firstrun.flag" ]; then
+  echo "Testing connection..."
+  cd "/mt5docker"
+  wine python test.py
+  touch /tmp/firstrun.flag
+fi
 
 # prevent container termination
 while true
