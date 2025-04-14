@@ -1,6 +1,6 @@
 services:
   mt5docker:
-    image: hpdeandrade/mt5docker:latest
+    image: hpdeandrade/mt5docker:stable
     container_name: mt5docker
     environment:
       - MT5_HOST=

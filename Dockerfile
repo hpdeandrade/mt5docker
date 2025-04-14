@@ -2,11 +2,14 @@ FROM tobix/pywine:3.13
 
 WORKDIR /mt5docker
 
-RUN apt update && \
-    apt install cabextract xvfb x11vnc python3-websockify python3-numpy procps -y && \
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y --no-install-recommends cabextract xvfb x11vnc python3-websockify python3-numpy procps && \
+    apt-get clean && \
     curl -L -o noVNC.zip https://github.com/novnc/noVNC/archive/refs/heads/master.zip && unzip noVNC.zip && rm noVNC.zip && \
-    wine pip install MetaTrader5 pymt5linux && \
     rm -rf /var/lib/apt/lists/*
+
+RUN wine pip install MetaTrader5 pymt5linux
 
 RUN curl -L -o winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks && \
     chmod +x winetricks && \
@@ -14,6 +17,6 @@ RUN curl -L -o winetricks https://raw.githubusercontent.com/Winetricks/winetrick
     xvfb-run sh -c "winetricks --unattended vcrun2019" && \
     rm -rf /tmp/*
 
-COPY start.sh mt5cfg.ini test.py /mt5docker/
+COPY start.sh mt5cfg.ini test.py ./
 
 ENTRYPOINT ["./start.sh"]
