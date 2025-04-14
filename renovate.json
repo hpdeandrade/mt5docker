@@ -20,12 +20,14 @@
     ],
   "packageRules": [
       {
-        "matchPackageNames": ["MetaTrader5", "pymt5linux"],
-        "enabled": true
+        "matchManagers": ["pip_requirements"],
+        "matchPackageNames": ["*"],
+        "enabled": false
       },
       {
         "matchManagers": ["pip_requirements"],
-        "enabled": false
+        "matchPackageNames": ["MetaTrader5", "pymt5linux"],
+        "enabled": true
       }
     ]
   },
