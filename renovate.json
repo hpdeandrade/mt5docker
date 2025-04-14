@@ -14,8 +14,20 @@
       "compose.yaml"
     ]
   },
-  "commitMessagePrefix": "chore(deps): ",
-  "schedule": [
-    "on the first day of the month"
-  ]
+  "pip_requirements": {
+    "fileMatch": [
+      "requirements.txt"
+    ],
+  "packageRules": [
+      {
+        "matchPackageNames": ["MetaTrader5", "pymt5linux"],
+        "enabled": true
+      },
+      {
+        "matchManagers": ["pip_requirements"],
+        "enabled": false
+      }
+    ]
+  },
+  "commitMessagePrefix": "chore(deps): "
 }
