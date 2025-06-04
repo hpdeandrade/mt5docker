@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from pymt5linux import MetaTrader5
 
 print("Establishing connection...")
