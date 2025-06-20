@@ -17,6 +17,6 @@ RUN curl -L -o winetricks https://raw.githubusercontent.com/Winetricks/winetrick
     mv winetricks /usr/bin/ && \
     xvfb-run sh -c "winetricks --unattended vcrun2019"
 
-COPY start.sh mt5cfg.ini test.py ./
+COPY start.sh mt5cfg.ini tests ./
 
 ENTRYPOINT ["./start.sh"]
