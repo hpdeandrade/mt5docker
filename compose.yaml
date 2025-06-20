@@ -1,10 +1,10 @@
 services:
   mt5docker:
-    image: hpdeandrade/mt5docker:5.0.4993
+    image: hpdeandrade/mt5docker:latest
     container_name: mt5docker
     environment:
       - MT5_HOST=
-      - VNC_PW=
+      - VNC_PWD=
     ports:
       - 5901:5901
       - 6081:6081

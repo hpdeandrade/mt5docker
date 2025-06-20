@@ -1,5 +1,4 @@
 #!/bin/bash
-
 cd /mt5docker
 
 # remove display lock if any
@@ -8,7 +7,7 @@ rm -rf /tmp/.X100-lock
 # set up display
 export DISPLAY=:100
 Xvfb :100 -ac -screen 0 1024x768x24 &
-x11vnc -storepasswd $VNC_PW /mt5docker/passwd
+x11vnc -storepasswd $VNC_PWD /mt5docker/passwd
 x11vnc -display :100 -forever -rfbport 5901 -rfbauth /mt5docker/passwd &
 chmod 600 /mt5docker/passwd
 /mt5docker/noVNC-master/utils/novnc_proxy --vnc localhost:5901 --listen 6081 &
@@ -36,8 +35,8 @@ sleep 15
 # test connection when container starts up
 if [ ! -f "/tmp/firstrun.flag" ]; then
   echo "Testing connection..."
-  cd "/mt5docker"
-  wine python test.py
+  cd "/mt5docker/tests"
+  wine python test_connection.py
   touch /tmp/firstrun.flag
 fi
 
