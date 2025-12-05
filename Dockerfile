@@ -1,4 +1,4 @@
-FROM hpdeandrade/pywine:staging
+FROM hpdeandrade/pywine:3.13.9
 
 WORKDIR /mt5docker
 
@@ -18,5 +18,6 @@ RUN curl -L -o winetricks https://raw.githubusercontent.com/Winetricks/winetrick
     xvfb-run sh -c "winetricks --unattended vcrun2019"
 
 COPY start.sh mt5cfg.ini tests ./
+RUN chmod +x ./start.sh
 
 ENTRYPOINT ["./start.sh"]
