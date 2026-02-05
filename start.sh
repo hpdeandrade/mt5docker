@@ -1,10 +1,16 @@
 #!/bin/bash
+# Redirect all output/error to a log file for debugging
+exec > /var/log/start_debug.log 2>&1
+set -x
+
 cd /mt5docker
+echo "Starting container script..."
 
 # remove display lock if any
 rm -rf /tmp/.X100-lock
 
 # set up display
+echo "Setting up Xvfb..."
 export DISPLAY=:100
 Xvfb :100 -ac -screen 0 1024x768x24 &
 x11vnc -storepasswd $VNC_PWD /mt5docker/passwd
@@ -12,16 +18,49 @@ x11vnc -display :100 -forever -rfbport 5901 -rfbauth /mt5docker/passwd &
 chmod 600 /mt5docker/passwd
 /mt5docker/noVNC-master/utils/novnc_proxy --vnc localhost:5901 --listen 6081 &
 
+# wait for Xvfb to be ready
+echo "Waiting for Xvfb socket..."
+for i in {1..30}; do
+  if [ -S /tmp/.X11-unix/X100 ]; then
+    echo "Xvfb is ready."
+    break
+  fi
+  sleep 0.5
+done
+sleep 2
+
+# start window manager
+echo "Starting Fluxbox..."
+/usr/bin/fluxbox &
+
+# start clipboard sync polling (Host -> Container)
+# autocutsel was unreliable, so we use a simple polling loop using xprop and xclip.
+echo "Starting clipboard sync..."
+(
+  while true; do
+    # 1. Read CUT_BUFFER0 (updated by VNC server from Host)
+    # 2. Extract the string value
+    # 3. Pipe into xclip to update Container's Clipboard
+    xprop -root -notype CUT_BUFFER0 2>/dev/null | sed -E 's/.*= "(.*)"/\1/' | xclip -i -selection clipboard 2>/dev/null
+    sleep 1
+  done
+) &
+
 # install mt5 if not installed yet
 if [ ! -f "/opt/wineprefix/drive_c/Program Files/MetaTrader 5/terminal64.exe" ]; then
+  echo "Downloading MT5 installer..."
   curl -L -o mt5setup.exe https://download.mql5.com/cdn/web/metaquotes.ltd/mt5/mt5setup.exe
+  echo "Running MT5 installer..."
   wine mt5setup.exe
   wine taskkill /IM "terminal64.exe" /F
 fi
 
 # open mt5
-mv "/mt5docker/mt5cfg.ini" "/opt/wineprefix/drive_c/Program Files/MetaTrader 5"
+if [ -f "/mt5docker/mt5cfg.ini" ]; then
+    mv "/mt5docker/mt5cfg.ini" "/opt/wineprefix/drive_c/Program Files/MetaTrader 5"
+fi
 cd "/opt/wineprefix/drive_c/Program Files/MetaTrader 5"
+echo "Starting MT5 Terminal..."
 wine terminal64.exe /config:mt5cfg.ini &
 echo "Waiting 15s for MT5 Windows to instantiate..."
 sleep 15
@@ -41,6 +80,7 @@ if [ ! -f "/tmp/firstrun.flag" ]; then
 fi
 
 # prevent container termination
+echo "Entering keep-alive loop..."
 while true
 do
   sleep 1
