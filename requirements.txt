@@ -1,2 +1,2 @@
-MetaTrader5==5.0.5430
+MetaTrader5==5.0.5572
 pymt5linux==1.0
