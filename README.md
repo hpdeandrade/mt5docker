@@ -3,6 +3,8 @@ Welcome to mt5docker repository!
 
 Before stepping into the below, I strongly recommend you to check MetaQuotes' [official Python MQL5 documentation](https://www.mql5.com/en/docs/python_metatrader5).
 
+This image is based on [webcomics' pywine image](https://github.com/webcomics/pywine). It builds on wine staging rather than wine stable for better compatibility with MetaTrader5. Please refer to the Dockerfile.
+
 ## How To Use
 1\. Clone the repo and make sure Docker is installed.
 
