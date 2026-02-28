@@ -1,7 +1,4 @@
 #!/bin/bash
-# Redirect all output/error to a log file for debugging
-exec > /var/log/start_debug.log 2>&1
-set -x
 
 cd /mt5docker
 echo "Starting container script..."
@@ -34,14 +31,11 @@ echo "Starting Fluxbox..."
 /usr/bin/fluxbox &
 
 # start clipboard sync polling (Host -> Container)
-# autocutsel was unreliable, so we use a simple polling loop using xprop and xclip.
+# Using python to robustly unescape xprop output (handles newlines, quotes, etc.)
 echo "Starting clipboard sync..."
 (
   while true; do
-    # 1. Read CUT_BUFFER0 (updated by VNC server from Host)
-    # 2. Extract the string value
-    # 3. Pipe into xclip to update Container's Clipboard
-    xprop -root -notype CUT_BUFFER0 2>/dev/null | sed -E 's/.*= "(.*)"/\1/' | xclip -i -selection clipboard 2>/dev/null
+    xprop -root -notype CUT_BUFFER0 2>/dev/null |     python3 -c "import sys,ast; d=sys.stdin.read(); print(ast.literal_eval(d.split('=',1)[1].strip()), end='') if '=' in d else None" |     xclip -i -selection clipboard 2>/dev/null
     sleep 1
   done
 ) &

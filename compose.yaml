@@ -4,7 +4,7 @@ services:
     image: mt5docker:local
     container_name: mt5docker
     environment:
-      - MT5_HOST=
+      - MT5_HOST=0.0.0.0
       - VNC_PWD=QuickPass@1245
     ports:
       - 5901:5901
@@ -13,3 +13,24 @@ services:
     restart: "no"
     stdin_open: true
     tty: true
+
+
+  mt5docker_rv_exness:
+    build: .
+    image: mt5docker:local
+    container_name: mt5docker_rv_exness
+    environment:
+      - MT5_HOST=0.0.0.0
+      - VNC_PWD=QuickPass@1245
+    ports:
+      - 5902:5901
+      - 6082:6081
+      - 8002:8001
+    restart: "no"
+    stdin_open: true
+    tty: true
+
+
+
+
+
