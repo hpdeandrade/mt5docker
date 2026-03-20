@@ -3,12 +3,13 @@ services:
     image: hpdeandrade/mt5docker:latest
     container_name: mt5docker
     environment:
-      - MT5_HOST=
+      - MT5_HOST=mt5docker
       - VNC_PWD=
     ports:
       - 5901:5901
       - 6081:6081
       - 8001:8001
+    #network_mode: host   # uncomment this to run on local network
     restart: "no"
     stdin_open: true
     tty: true
