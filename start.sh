@@ -12,6 +12,17 @@ x11vnc -display :100 -forever -rfbport 5901 -rfbauth /mt5docker/passwd &
 chmod 600 /mt5docker/passwd
 /mt5docker/noVNC-master/utils/novnc_proxy --vnc localhost:5901 --listen 6081 &
 
+# install python dependencies if not already installed
+if [ ! -f "/opt/wineprefix/pip_installed.flag" ]; then
+  wine pip install --no-cache-dir -r /mt5docker/requirements.txt
+  touch /opt/wineprefix/pip_installed.flag
+fi
+
+# install vcrun2019 if not already installed
+if ! grep -q "vcrun2019" /opt/wineprefix/winetricks.log 2>/dev/null; then
+  winetricks --unattended vcrun2019
+fi
+
 # install mt5 if not installed yet
 if [ ! -f "/opt/wineprefix/drive_c/Program Files/MetaTrader 5/terminal64.exe" ]; then
   curl -L -o mt5setup.exe https://download.mql5.com/cdn/web/metaquotes.ltd/mt5/mt5setup.exe

@@ -11,10 +11,11 @@ RUN apt-get update && \
     curl -L -o noVNC.zip https://github.com/novnc/noVNC/archive/refs/heads/master.zip && unzip noVNC.zip && rm noVNC.zip && \
     rm -rf /var/lib/apt/lists/*
 
+COPY requirements.txt ./
+
 RUN curl -L -o winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks && \
     chmod +x winetricks && \
-    mv winetricks /usr/bin/ && \
-    xvfb-run sh -c "winetricks --unattended vcrun2019"
+    mv winetricks /usr/bin/
 
 COPY start.sh mt5cfg.ini tests ./
 RUN chmod +x ./start.sh
