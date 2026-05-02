@@ -12,7 +12,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt ./
-RUN wine pip install -r requirements.txt
+RUN wine pip install --no-cache-dir -r requirements.txt
 
 RUN curl -L -o winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks && \
     chmod +x winetricks && \
