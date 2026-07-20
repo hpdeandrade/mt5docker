@@ -9,35 +9,20 @@
       "/Dockerfile/"
     ]
   },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/Dockerfile/"
+      ],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s+ARG .*?_VERSION=(?<currentValue>.*)\\s"
+      ]
+    }
+  ],
   "docker-compose": {
     "managerFilePatterns": [
       "/compose.yaml/"
-    ]
-  },
-  "pip_requirements": {
-    "managerFilePatterns": [
-      "/requirements.txt/"
-    ],
-    "packageRules": [
-      {
-        "matchManagers": [
-          "pip_requirements"
-        ],
-        "matchPackageNames": [
-          "*"
-        ],
-        "enabled": false
-      },
-      {
-        "matchManagers": [
-          "pip_requirements"
-        ],
-        "matchPackageNames": [
-          "MetaTrader5",
-          "pymt5linux"
-        ],
-        "enabled": true
-      }
     ]
   },
   "commitMessagePrefix": "chore(deps): "

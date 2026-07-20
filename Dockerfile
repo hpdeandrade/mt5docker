@@ -11,7 +11,18 @@ RUN apt-get update && \
     curl -L -o noVNC.zip https://github.com/novnc/noVNC/archive/refs/heads/master.zip && unzip noVNC.zip && rm noVNC.zip && \
     rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt ./
+COPY pyproject.toml uv.lock ./
+
+# renovate: datasource=github-releases depName=astral-sh/uv versioning=semver
+ARG UV_VERSION=0.11.29
+
+# Install uv into the Wine prefix's Python dir (already on the Windows PATH via
+# PrependPath=1 in pywine-staging), then build the Windows-side venv containing
+# the Windows-only Python deps (MetaTrader5, pymt5linux) at image build time.
+RUN curl -L -o uv.zip "https://github.com/astral-sh/uv/releases/download/${UV_VERSION}/uv-x86_64-pc-windows-msvc.zip" && \
+    unzip uv.zip uv.exe -d /opt/wineprefix/drive_c/Python && \
+    rm uv.zip && \
+    wine uv sync --frozen --no-cache
 
 RUN curl -L -o winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks && \
     chmod +x winetricks && \
@@ -19,5 +30,12 @@ RUN curl -L -o winetricks https://raw.githubusercontent.com/Winetricks/winetrick
 
 COPY start.sh mt5cfg.ini tests ./
 RUN chmod +x ./start.sh
+
+# Drop to a non-root user. None of the ports used (5901, 6081, 8001) require
+# root, and Wine/winetricks/x11vnc all run fine unprivileged as long as they
+# own their working dirs.
+RUN useradd --create-home --uid 1000 mt5user && \
+    chown -R mt5user:mt5user /mt5docker /opt/wineprefix
+USER mt5user
 
 ENTRYPOINT ["./start.sh"]
