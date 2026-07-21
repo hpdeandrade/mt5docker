@@ -43,6 +43,5 @@ RUN chmod +x ./start.sh
 # own their working dirs.
 RUN useradd --create-home --uid 1000 mt5user && \
     chown -R mt5user:mt5user /mt5docker /opt/wineprefix
-USER mt5user
 
 ENTRYPOINT ["./start.sh"]
