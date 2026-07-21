@@ -7,6 +7,12 @@ if [ -z "$VNC_PWD" ]; then
   exit 1
 fi
 
+# refuse to start without a MT5 host to connect to
+if [ -z "$MT5_HOST" ]; then
+  echo "ERROR: MT5_HOST is not set." >&2
+  exit 1
+fi
+
 # remove display lock if any
 rm -rf /tmp/.X100-lock
 
@@ -23,7 +29,7 @@ chmod 600 /mt5docker/passwd
 
 # install mt5 if not installed yet
 if [ ! -f "/opt/wineprefix/drive_c/Program Files/MetaTrader 5/terminal64.exe" ]; then
-  curl -L -o mt5setup.exe https://download.terminal.free/cdn/web/metaquotes.ltd/mt5/mt5setup.exe
+  curl -fL -o mt5setup.exe https://download.terminal.free/cdn/web/metaquotes.ltd/mt5/mt5setup.exe
   wine mt5setup.exe /auto
   wine taskkill /IM "terminal64.exe" /F
 fi
