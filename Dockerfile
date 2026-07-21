@@ -1,8 +1,11 @@
-FROM tobix/pywine:3.13
+# below image is based on tobix/pywine image - https://hub.docker.com/r/tobix/pywine
+# change image tag to latest to follow webcomics updates - https://github.com/webcomics/pywine
+FROM hpdeandrade/pywine-staging:3.14
 
 WORKDIR /mt5docker
 
 RUN apt-get update && \
+    apt-get upgrade -y && \
     apt-get install -y --no-install-recommends cabextract xvfb x11vnc python3-websockify python3-numpy procps && \
     apt-get clean && \
     curl -fL -o noVNC.zip https://github.com/novnc/noVNC/archive/refs/heads/master.zip && unzip noVNC.zip && rm noVNC.zip && \
