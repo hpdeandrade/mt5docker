@@ -1,6 +1,4 @@
-# below image is based on tobix/pywine image - https://hub.docker.com/r/tobix/pywine
-# change image tag to latest to follow webcomics updates - https://github.com/webcomics/pywine
-FROM hpdeandrade/pywine-staging:3.14
+FROM tobix/pywine:3.13
 
 WORKDIR /mt5docker
 

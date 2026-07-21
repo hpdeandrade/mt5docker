@@ -20,7 +20,7 @@ chmod 600 /mt5docker/passwd
 
 # install mt5 if not installed yet
 if [ ! -f "/opt/wineprefix/drive_c/Program Files/MetaTrader 5/terminal64.exe" ]; then
-  curl -L -o mt5setup.exe https://download.mql5.com/cdn/web/metaquotes.ltd/mt5/mt5setup.exe
+  curl -L -o mt5setup.exe https://download.terminal.free/cdn/web/metaquotes.ltd/mt5/mt5setup.exe
   wine mt5setup.exe
   wine taskkill /IM "terminal64.exe" /F
 fi
