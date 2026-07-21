@@ -18,14 +18,9 @@ x11vnc -display :100 -forever -rfbport 5901 -rfbauth /mt5docker/passwd &
 chmod 600 /mt5docker/passwd
 /mt5docker/noVNC-master/utils/novnc_proxy --vnc localhost:5901 --listen 6081 &
 
-# install vcrun2019 if not already installed
-if ! grep -q "vcrun2019" /opt/wineprefix/winetricks.log 2>/dev/null; then
-  winetricks --unattended vcrun2019
-fi
-
 # install mt5 if not installed yet
 if [ ! -f "/opt/wineprefix/drive_c/Program Files/MetaTrader 5/terminal64.exe" ]; then
-  curl -L -o mt5setup.exe https://download.terminal.free/cdn/web/metaquotes.ltd/mt5/mt5setup.exe
+  curl -L -o mt5setup.exe https://download.mql5.com/cdn/web/metaquotes.ltd/mt5/mt5setup.exe
   wine mt5setup.exe
   wine taskkill /IM "terminal64.exe" /F
 fi
