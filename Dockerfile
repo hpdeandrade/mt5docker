@@ -38,10 +38,4 @@ RUN curl -fL -o winetricks "https://raw.githubusercontent.com/Winetricks/winetri
 COPY start.sh mt5cfg.ini tests ./
 RUN chmod +x ./start.sh
 
-# Drop to a non-root user. None of the ports used (5901, 6081, 8001) require
-# root, and Wine/winetricks/x11vnc all run fine unprivileged as long as they
-# own their working dirs.
-RUN useradd --create-home --uid 1000 mt5user && \
-    chown -R mt5user:mt5user /mt5docker /opt/wineprefix
-
 ENTRYPOINT ["./start.sh"]
