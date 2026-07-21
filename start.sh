@@ -12,7 +12,10 @@ rm -rf /tmp/.X100-lock
 
 # set up display
 export DISPLAY=:100
-Xvfb :100 -ac -screen 0 1024x768x24 &
+Xvfb :100 -ac -screen 0 1920x1080x24 &
+# Xvfb has no window manager of its own, so windows never get maximized/decorated
+# without one; fluxbox is just enough to let wmctrl maximize MT5 below.
+fluxbox &
 x11vnc -storepasswd $VNC_PWD /mt5docker/passwd
 x11vnc -display :100 -forever -rfbport 5901 -rfbauth /mt5docker/passwd &
 chmod 600 /mt5docker/passwd
@@ -31,6 +34,7 @@ cd "/opt/wineprefix/drive_c/Program Files/MetaTrader 5"
 wine terminal64.exe /config:mt5cfg.ini &
 echo "Waiting 15s for MT5 Windows to instantiate..."
 sleep 15
+wmctrl -r ":ACTIVE:" -b add,maximized_vert,maximized_horz
 
 # open mt5 linux
 cd /mt5docker
